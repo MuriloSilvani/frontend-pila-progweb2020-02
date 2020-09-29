@@ -44,7 +44,6 @@
   <div class="container-fluid">
     <div class="container">
       <div class="table-responsive">
-
         <table class="table">
           <thead>
             <tr>
@@ -57,31 +56,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>
-                +
-              </td>
-              <td>
-                Categoria
-              </td>
-              <td>
-                27/09/2020 23:06
-              </td>
-              <td>
-                Descrição
-              </td>
-              <td>
-                5.321,54
-              </td>
-              <td>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-alterar">Alterar</button>
-              </td>
-              <td>
-                <button class="btn btn-danger" data-toggle="modal" data-target="#modal-excluir">Excluir</button>
-              </td>
-            </tr>
-          </tbody>
+          <tbody id="list"></tbody>
         </table>
       </div>
     </div>
@@ -99,8 +74,7 @@
           </button>
         </div>
         <div class="modal-body">
-
-          <form class="pl-3">
+          <form class="pl-3" >
             <div class="form-group row">
               <label for="inputName" class="col-sm-1-12 col-form-label"></label>
               <div class="col-sm-1-12">
@@ -110,14 +84,7 @@
               <button class="ml-2 btn btn-primary">Adicionar</button>
             </div>
           </form>
-
-          <div class="list-group">
-            <div class="list-group-item">Active item</div>
-            <div class="list-group-item">Active item</div>
-            <div class="list-group-item">Active item</div>
-            <div class="list-group-item">Active item</div>
-          </div>
-
+          <div class="list-group" id="categories"></div>
         </div>
       </div>
     </div>
@@ -135,21 +102,16 @@
           </button>
         </div>
         <div class="modal-body">
-
           <form>
             <div class="form-group">
               <label for="">Categoria</label>
-              <select class="form-control" name="" id="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-              </select>
+              <select class="form-control" name="" id="categories-options"></select>
             </div>
             <div class="form-group">
               <label for="">Tipo</label>
               <select class="form-control" name="" id="">
-                <option>Gastei pilas (-)</option>
-                <option>Ganhei pilas (+)</option>
+                <option value="-">Gastei pilas (-)</option>
+                <option value="+">Ganhei pilas (+)</option>
               </select>
             </div>
             <div class="form-group">
@@ -264,15 +226,6 @@
     </div>
   </div>
 
-  <script>
-    $('#exampleModal').on('show.bs.modal', event => {
-      var button = $(event.relatedTarget);
-      var modal = $(this);
-      // Use above variables to manipulate the DOM
-
-    });
-  </script>
-
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -284,6 +237,73 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+
+
+    
+<script>
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+    let categories = [...Array(10).keys()].map(category => {
+      return {
+        id: category,
+        category: `category ${category}`,
+      }
+    })
+
+    categories.map(category => {
+      $('#categories').append(`
+        <div class="list-group-item">${category.category}</div>
+      `)
+      $('#categories-options').append(`
+        <option value="${category.id}">${category.category}</option>
+      `)
+    })
+
+    let list = [...Array(10).keys()].map(item => {
+      return {
+        id: item,
+        type: getRandomInt(-1,1) ? `+` : `-`,
+        category: categories[getRandomInt(0, categories.length)],
+        date: new Date(),
+        description: `description ${item}`,
+        value: getRandomInt(1, 100000),
+      }
+    })
+
+    list.map(item => {
+      $('#list').append(`
+        <tr>
+          <td>
+            ${item.type}
+          </td>
+          <td>
+            ${item.category.category}
+          </td>
+          <td>
+            ${item.date.toLocaleString()}
+          </td>
+          <td>
+            ${item.description}
+          </td>
+          <td>
+            ${item.value}
+          </td>
+          <td>
+            <button class="btn btn-primary" id"${item.id}" data-toggle="modal" data-target="#modal-alterar">Alterar</button>
+          </td>
+          <td>
+            <button class="btn btn-danger" id"${item.id}" data-toggle="modal" data-target="#modal-excluir">Excluir</button>
+          </td>
+        </tr>
+      `)
+    })
+
+
+  </script>
 </body>
 
 </html>
