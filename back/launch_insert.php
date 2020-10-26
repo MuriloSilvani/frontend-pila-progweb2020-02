@@ -29,6 +29,5 @@
     $data = $query->rowCount();
     
     echo json_encode($data)
+// <!-- http://pila.br/backend-pila/launch_insert.php?id_category=1&type=1&description=teste&value=999 -->
 ?>
-
-<!-- http://pila.br/backend-pila/launch_insert.php?id_category=1&type=1&description=teste&value=999 -->

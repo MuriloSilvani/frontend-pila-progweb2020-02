@@ -9,7 +9,7 @@
             description = :description,
             value = :value
         where
-            id = :id
+            _id = :id
         ";
 
     $query = $db->prepare($sql);
@@ -21,6 +21,5 @@
     $data = $query->rowCount();
     
     echo json_encode($data)
+// <!-- http://pila.br/backend-pila/launch_update.php?id=1&description=teste&value=999 -->
 ?>
-
-<!-- http://pila.br/backend-pila/launch_update.php?id=1&description=teste&value=999 -->

@@ -62,10 +62,10 @@
                 {{ item.type ? '+' : '-' }}
               </td>
               <td>
-                {{ item.category.category }}
+                {{ item.id_category }}
               </td>
               <td>
-                {{ item.date | date }}
+                {{ item.created_at | date }}
               </td>
               <td>
                 {{ item.description }}
@@ -74,10 +74,11 @@
                 {{ item.value | currency }}
               </td>
               <td>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-alterar">Alterar</button>
+                <button ng-click='loadLaunch(item)' class="btn btn-primary" data-toggle="modal" data-target="#modal-alterar">Alterar</button>
               </td>
               <td>
-                <button class="btn btn-danger" data-toggle="modal" data-target="#modal-excluir">Excluir</button>
+                <!-- <button class="btn btn-danger" data-toggle="modal" data-target="#modal-excluir">Excluir</button> -->
+                <button ng-click='deleteLaunch(item._id)' class="btn btn-danger">Excluir</button>
               </td>
             </tr>
           </tbody>
@@ -110,7 +111,7 @@
           </form>
           <div class="list-group">
             <div ng-repeat='category in categories' class="list-group-item">
-              {{ category }}
+              {{ category.name }}
             </div>
           </div>
         </div>
@@ -133,32 +134,32 @@
           <form>
             <div class="form-group">
               <label for="">Categoria</label>
-              <select class="form-control" name="">
-                <option ng-repeat='category in categories track by $index' ng-value="category.id">{{ category.name }}</option>
+              <select ng-model='id_category' class="form-control" name="">
+                <option ng-repeat='category in categories track by $index' ng-value="category._id">{{ category.name }}</option>
               </select>
             </div>
             <div class="form-group">
               <label for="">Tipo</label>
-              <select class="form-control" name="" id="">
-                <option value="-">Gastei pilas (-)</option>
-                <option value="+">Ganhei pilas (+)</option>
+              <select ng-model='type' class="form-control" name="" id="">
+                <option value="0">Gastei pilas (-)</option>
+                <option value="1">Ganhei pilas (+)</option>
               </select>
             </div>
             <div class="form-group">
               <label for="">Descrição</label>
-              <input type="text" class="form-control" name="" id="" aria-describedby="helpId"
+              <input ng-model='description' type="text" class="form-control" name="" id="" aria-describedby="helpId"
                 placeholder="Digite a descrição do lançamento">
             </div>
             <div class="form-group">
               <label for="">Pilas</label>
-              <input type="text" class="form-control" name="" id="" aria-describedby="helpId"
+              <input ng-model='value' type="text" class="form-control" name="" id="" aria-describedby="helpId"
                 placeholder="Quantos pilas">
             </div>
           </form>
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Salvar</button>
+          <button ng-click='saveLaunch()' type="button" class="btn btn-primary">Salvar</button>
         </div>
       </div>
     </div>
@@ -180,77 +181,19 @@
           <form>
             <div class="form-group">
               <label for="">Descrição</label>
-              <input type="text" class="form-control" name="" id="" aria-describedby="helpId"
+              <input ng-model='update.description' type="text" class="form-control" name="" id="" aria-describedby="helpId"
                 placeholder="Digite a descrição do lançamento">
             </div>
             <div class="form-group">
               <label for="">Pilas</label>
-              <input type="text" class="form-control" name="" id="" aria-describedby="helpId"
+              <input ng-model='update.value' type="text" class="form-control" name="" id="" aria-describedby="helpId"
                 placeholder="Quantos pilas">
             </div>
           </form>
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Salvar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal excluir -->
-  <div class="modal fade" id="modal-excluir" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Excluir lançamento</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="alert alert-primary" role="alert">
-            <p class="mb-0">Tem certeza que deseja excluir o lançamento</p>
-          </div>
-
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Categoria</th>
-                  <th>Data Hora</th>
-                  <th>Descrição</th>
-                  <th>Pilas</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    +
-                  </td>
-                  <td>
-                    Categoria
-                  </td>
-                  <td>
-                    27/09/2020 23:06
-                  </td>
-                  <td>
-                    Descrição
-                  </td>
-                  <td>
-                    5.321,54
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Cancelar</button>
-          <button type="button" class="btn btn-danger">Excluir</button>
+          <button ng-click='updateLaunch()' type="button" class="btn btn-primary">Salvar</button>
         </div>
       </div>
     </div>

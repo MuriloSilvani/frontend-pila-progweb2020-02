@@ -7,6 +7,5 @@
     $query->execute();
     $data = $query->fetchAll(PDO::FETCH_OBJ);
     echo json_encode($data)
+    // <!-- http://pila.br/backend-pila/launch_list.php -->
 ?>
-
-<!-- http://pila.br/backend-pila/launch_list.php -->

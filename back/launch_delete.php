@@ -3,7 +3,7 @@
 
     $id = $_GET["id"];
 
-    $sql = "delete from launch where id = :id";
+    $sql = "delete from launch where _id = :id";
 
     $query = $db->prepare($sql);
     $query->bindParam(":id", $id, PDO::PARAM_STR);
@@ -12,6 +12,5 @@
     $data = $query->rowCount();
     
     echo json_encode($data)
+// <!-- http://pila.br/backend-pila/launch_delete.php?id=1 -->
 ?>
-
-<!-- http://pila.br/backend-pila/launch_delete.php?id=1 -->
