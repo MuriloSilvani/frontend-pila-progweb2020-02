@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app='pilas' ng-controller='pilasController'>
 
 <head>
   <title>Pila$</title>
@@ -24,7 +24,7 @@
       <a href class="nav-item nav-link" data-toggle="modal" data-target="#modal-lancamento">Novo Lançamento</a>
     </div>
     <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+      <input ng-model='query' class="form-control mr-sm-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
     </form>
   </nav>
@@ -56,7 +56,31 @@
               <th></th>
             </tr>
           </thead>
-          <tbody id="list"></tbody>
+          <tbody>
+            <tr ng-repeat='item in launch | filter:query'>
+              <td>
+                {{ item.type ? '+' : '-' }}
+              </td>
+              <td>
+                {{ item.category.category }}
+              </td>
+              <td>
+                {{ item.date | date }}
+              </td>
+              <td>
+                {{ item.description }}
+              </td>
+              <td>
+                {{ item.value | currency }}
+              </td>
+              <td>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-alterar">Alterar</button>
+              </td>
+              <td>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#modal-excluir">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -78,13 +102,17 @@
             <div class="form-group row">
               <label for="inputName" class="col-sm-1-12 col-form-label"></label>
               <div class="col-sm-1-12">
-                <input type="text" class="form-control" name="inputName" id="inputName"
+                <input ng-model='category' type="text" class="form-control" name="inputName" id="inputName"
                   placeholder="Digite o nome da categoria">
               </div>
-              <button class="ml-2 btn btn-primary">Adicionar</button>
+              <button ng-click='saveCategory()' class="ml-2 btn btn-primary">Adicionar</button>
             </div>
           </form>
-          <div class="list-group" id="categories"></div>
+          <div class="list-group">
+            <div ng-repeat='category in categories' class="list-group-item">
+              {{ category }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -105,7 +133,9 @@
           <form>
             <div class="form-group">
               <label for="">Categoria</label>
-              <select class="form-control" name="" id="categories-options"></select>
+              <select class="form-control" name="">
+                <option ng-repeat='category in categories track by $index' ng-value="category.id">{{ category.name }}</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="">Tipo</label>
@@ -238,72 +268,9 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+  <script src="app.js"></script>
 
-    
-<script>
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-
-    let categories = [...Array(10).keys()].map(category => {
-      return {
-        id: category,
-        category: `category ${category}`,
-      }
-    })
-
-    categories.map(category => {
-      $('#categories').append(`
-        <div class="list-group-item">${category.category}</div>
-      `)
-      $('#categories-options').append(`
-        <option value="${category.id}">${category.category}</option>
-      `)
-    })
-
-    let list = [...Array(10).keys()].map(item => {
-      return {
-        id: item,
-        type: getRandomInt(-1,1) ? `+` : `-`,
-        category: categories[getRandomInt(0, categories.length)],
-        date: new Date(),
-        description: `description ${item}`,
-        value: getRandomInt(1, 100000),
-      }
-    })
-
-    list.map(item => {
-      $('#list').append(`
-        <tr>
-          <td>
-            ${item.type}
-          </td>
-          <td>
-            ${item.category.category}
-          </td>
-          <td>
-            ${item.date.toLocaleString()}
-          </td>
-          <td>
-            ${item.description}
-          </td>
-          <td>
-            ${item.value}
-          </td>
-          <td>
-            <button class="btn btn-primary" id"${item.id}" data-toggle="modal" data-target="#modal-alterar">Alterar</button>
-          </td>
-          <td>
-            <button class="btn btn-danger" id"${item.id}" data-toggle="modal" data-target="#modal-excluir">Excluir</button>
-          </td>
-        </tr>
-      `)
-    })
-
-
-  </script>
 </body>
 
 </html>
